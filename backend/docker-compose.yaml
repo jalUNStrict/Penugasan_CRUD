@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:15
+    container_name: Penugasan_2
+    environment:
+      POSTGRES_USER: cihuy
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: tugas_migrate_rsi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

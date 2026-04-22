@@ -11,5 +11,5 @@ class Account(SQLModel, table = True):
     email: str 
     username: str = Field(max_length=16) 
     password: str 
-    created_at: datetime = Field(default_factory=datetime) 
-    updated_at: datetime = Field(default_factory=datetime)  
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)

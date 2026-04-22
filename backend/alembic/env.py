@@ -7,16 +7,16 @@ from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
-from src.backend.utils.env import DATABASE_URL
+from src.utils.env import DATABASE_URL
 
 # Import SQLModel dan semua model Anda di sini
 from sqlmodel import SQLModel
-from src.backend.database.models.user import User
-from src.backend.database.models.account import Account
-from src.backend.database.models.role import Role
-from src.backend.database.models.event import Event
-from src.backend.database.models.registration import Registration 
-from src.backend.database.models.log import Log
+from src.database.models.user import User
+from src.database.models.account import Account
+from src.database.models.role import Role
+from src.database.models.event import Event
+from src.database.models.registration import Registration 
+from src.database.models.log import Log
 
 
 # this is the Alembic Config object, which provides

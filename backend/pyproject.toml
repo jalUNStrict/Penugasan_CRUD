@@ -10,15 +10,21 @@ dependencies = [
     "sqlmodel (>=0.0.38,<0.0.39)",
     "sqlalchemy (>=2.0.49,<3.0.0)",
     "psycopg2-binary (>=2.9.11,<3.0.0)",
-    "alembic (>=1.18.4,<2.0.0)"
+    "alembic (>=1.18.4,<2.0.0)",
+    "python-dotenv (>=1.2.2,<2.0.0)",
+    "fastapi[standard] (>=0.135.3,<0.136.0)",
+    "pwdlib[argon2] (>=0.3.0,<0.4.0)",
+    "passlib[argon2] (>=1.7.4,<2.0.0)",
+    "python-jose[cryptography] (>=3.5.0,<4.0.0)",
+    "python-multipart (>=0.0.26,<0.0.27)",
 ]
 
 
 [tool.poetry]
-packages = [{include = "backend", from = "src"}]
+packages = [{include = "src"}]
 
 [tool.poe.tasks]
-dev = "fastapi dev src/backend/app.py"
+dev = "fastapi dev src/app.py"
 
 
 [build-system]

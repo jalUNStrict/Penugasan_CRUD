@@ -1,1 +1,3 @@
-# Penugasan_CRUD
+python -m uvicorn src.app:app --reload --port 8001
+or
+poetry run fastapi dev src/app.py

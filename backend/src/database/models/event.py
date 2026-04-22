@@ -2,17 +2,17 @@ from typing import Optional
 from datetime import datetime
 from sqlmodel import Field, SQLModel
 
-
 class Event(SQLModel, table=True):
-    __table_name__ = "events"
+    # Menggunakan "event" (tanpa s) agar cocok dengan tabel Registration
+    __tablename__ = "event" 
     __table_args__ = {"extend_existing": True}
 
-     # Primary Key dengan Auto-increment
+    # Primary Key
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     description: str
     quota: int
     started_at: datetime
-    end_at: datetime
-    created_at: datetime = Field(default_factory=datetime.now)
-    updated_at: datetime = Field(default_factory=datetime.now)
+    ended_at: datetime
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)

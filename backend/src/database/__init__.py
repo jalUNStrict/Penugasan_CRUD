@@ -1,1 +1,1 @@
-from .connection import get_session
+from .connection import get_session, SessionLocal

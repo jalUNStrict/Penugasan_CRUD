@@ -14,7 +14,7 @@ class EventService:
             description=data.description,
             quota=data.quota,
             started_at=data.started_at,
-            end_at=data.end_at
+            ended_at=data.ended_at  
         )
         return self.repository.create(event)
 
@@ -30,7 +30,7 @@ class EventService:
         event.description = data.description
         event.quota = data.quota
         event.started_at = data.started_at
-        event.end_at = data.end_at
+        event.ended_at = data.ended_at  
         
         return self.repository.update(event)
 
@@ -40,3 +40,6 @@ class EventService:
             raise HTTPException(status_code=404, detail="Event not found")
         self.repository.delete(event)
         return {"message": "Event deleted successfully"}
+    
+    def get_all_events(self):
+        return self.list_events()

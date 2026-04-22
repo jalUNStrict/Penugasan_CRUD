@@ -1,17 +1,13 @@
 from typing import Optional
-from datetime import datetime
+from sqlmodel import Field, SQLModel
 
-from sqlmodel import SQLModel, Field
+class Registration(SQLModel, table=True):
+    __tablename__ = "registration"
+    __table_args__ = {"extend_existing": True}
 
-class Registration(SQLModel, table = True):
-    
-    __table_name__ = "registrations"
-    __table_args__={"extend_existing": True}
-
-    #Primary Key 
+    # Primary Key
     id: Optional[int] = Field(default=None, primary_key=True)
-
-    #Foreign Key
-    user_id : int = Field(foreign_key = "user.id")
-    event_id : int = Field(foreign_key = "event.id")
     
+    # Foreign Keys
+    user_id: int = Field(foreign_key="user.id")   # Asumsi model User kamu pakai __tablename__ = "user"
+    event_id: int = Field(foreign_key="event.id") # Pastikan ini tulisannya "event.id" (tanpa s)

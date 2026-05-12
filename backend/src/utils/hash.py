@@ -1,10 +1,17 @@
+import os
+from pathlib import Path
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import jwt
+from dotenv import load_dotenv
+
+# Panggil load_dotenv di sini dengan path yang eksplisit
+env_path = Path(__file__).parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
-SECRET_KEY = "your_secret_key_here"  
-ALGORITHM = "HS256"
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-key-kalo-env-mati")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
 
 def get_password_hash(password: str):
     return pwd_context.hash(password)

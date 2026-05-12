@@ -9,7 +9,7 @@ class Event(SQLModel, table=True):
 
     # Primary Key
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
+    name: str = Field(unique=True)
     description: str
     quota: int
     started_at: datetime

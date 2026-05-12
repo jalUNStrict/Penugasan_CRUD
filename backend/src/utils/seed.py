@@ -5,43 +5,77 @@ from src.utils.hash import get_password_hash
 
 engine = create_engine(DATABASE_URL)
 
+# Konfigurasi seed data - mudah diubah
+ROLES = ["Admin", "User"]
+
+SEED_USERS = [
+    {
+        "first_name": "Admin",
+        "last_name": "User",
+        "whatsapp_number": "0800000000",
+        "accounts": [
+            {
+                "username": "admin",
+                "email": "admin@example.com",
+                "password": "admin123",
+                "role": "Admin"
+            }
+        ]
+    },
+    {
+        "first_name": "John",
+        "last_name": "Doe",
+        "whatsapp_number": "08123456789",
+        "accounts": [
+            {
+                "username": "user1",
+                "email": "user1@example.com",
+                "password": "user123",
+                "role": "User"
+            }
+        ]
+    }
+]
+
 def seed_database():
     with Session(engine) as db:
-        for r_name in ["Admin", "User"]:
+        # Seed roles
+        for r_name in ROLES:
             if not db.query(Role).filter(Role.name == r_name).first():
                 db.add(Role(name=r_name))
         db.commit()
         
-        admin_user = db.query(User).filter(User.first_name == "Admin").first()
-        if not admin_user:
-            admin_user = User(
-                first_name="Admin",
-                last_name="User",
-                whatsapp_number="0800000000"
-            )
-            db.add(admin_user)
-            db.commit()
-            db.refresh(admin_user)
+        # Seed users dan accounts
+        for user_data in SEED_USERS:
+            # Cek duplikasi user dengan kombinasi field
+            existing_user = db.query(User).filter(
+                User.first_name == user_data["first_name"],
+                User.last_name == user_data["last_name"],
+                User.whatsapp_number == user_data["whatsapp_number"]
+            ).first()
+            
+            if not existing_user:
+                new_user = User(
+                    first_name=user_data["first_name"],
+                    last_name=user_data["last_name"],
+                    whatsapp_number=user_data["whatsapp_number"]
+                )
+                db.add(new_user)
+                db.commit()
+                db.refresh(new_user)
+            else:
+                new_user = existing_user
+            
+            # Seed accounts untuk user ini
+            for acc_data in user_data.get("accounts", []):
+                if not db.query(Account).filter(Account.username == acc_data["username"]).first():
+                    role = db.query(Role).filter(Role.name == acc_data["role"]).first()
+                    db.add(Account(
+                        user_id=new_user.id,
+                        username=acc_data["username"],
+                        email=acc_data["email"],
+                        password=get_password_hash(acc_data["password"]),
+                        role_id=role.id
+                    ))
         
-        # Buat Account admin jika belum ada
-        admin_role = db.query(Role).filter(Role.name == "Admin").first()
-        if not db.query(Account).filter(Account.username == "admin").first():
-            db.add(Account(
-                user_id=admin_user.id,
-                username="admin",
-                email="admin@example.com",
-                password=get_password_hash("admin123"), 
-                role_id=admin_role.id
-            ))
-
-         # Buat Account user jika belum ada
-        User_role = db.query(Role).filter(Role.name == "User").first()
-        if not db.query(Account).filter(Account.username == "user").first():
-            db.add(Account(
-                user_id=admin_user.id,
-                username="user",
-                email="user@example.com",
-                password=get_password_hash("user123"),
-                role_id=User_role.id
-         ))   
         db.commit()

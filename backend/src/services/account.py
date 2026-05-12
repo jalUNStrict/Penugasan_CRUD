@@ -27,7 +27,7 @@ class AccountService:
         account.role_id = data.role_id
         account.email = data.email
         account.username = data.username
-        account.password = data.password # Sebaiknya di-hash jika untuk produksi
+        account.password = data.password 
         return self.account_repo.save(account)
 
     def remove(self, account_id: int):

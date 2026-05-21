@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from src.controllers.account import AccountController
 from src.dto.account import AccountRequest, AccountResponse
+from src.middlewares.auth import admin_only
 
 router = APIRouter(prefix="/accounts", tags=["Account Management"])
 
@@ -12,14 +13,14 @@ def get_accounts(ctrl: AccountController = Depends(AccountController)):
 def get_account(id: int, ctrl: AccountController = Depends(AccountController)):
     return ctrl.detail_account(id)
 
-@router.post("/", response_model=AccountResponse)
+@router.post("/", response_model=AccountResponse, dependencies=[Depends(admin_only)], description="Hanya admin yang dapat membuat akun baru")
 def create_account(data: AccountRequest, ctrl: AccountController = Depends(AccountController)):
     return ctrl.add_account(data)
 
-@router.put("/{id}", response_model=AccountResponse)
+@router.put("/{id}", response_model=AccountResponse, dependencies=[Depends(admin_only)], description="Hanya admin yang dapat mengubah data akun")
 def update_account(id: int, data: AccountRequest, ctrl: AccountController = Depends(AccountController)):
     return ctrl.edit_account(id, data)
 
-@router.delete("/{id}")
+@router.delete("/{id}", dependencies=[Depends(admin_only)], description="Hanya admin yang dapat menghapus akun")
 def delete_account(id: int, ctrl: AccountController = Depends(AccountController)):
     return ctrl.delete_account(id)

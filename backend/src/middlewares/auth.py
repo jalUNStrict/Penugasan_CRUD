@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 from src.database.connection import get_session
-from src.database.models import Account
+from src.database.models import Account, Role
 
 # 1. Load env di paling atas dengan path yang eksplisit
 env_path = Path(__file__).parent.parent.parent / ".env"
@@ -15,7 +15,7 @@ load_dotenv(dotenv_path=env_path)
 
 # 2. Ambil nilai dan pastikan nilainya string bersih
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-key-kalo-env-mati")
-ALGORITHM = os.getenv("ALGORITHM", "bcrypt")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
 
 bearer_scheme = HTTPBearer()
 
@@ -44,7 +44,14 @@ def get_current_user(
         raise HTTPException(status_code=401, detail="User tidak ditemukan")
     return user
 
-def admin_only(current_user: Account = Depends(get_current_user)):
-    if not current_user.role or current_user.role.name != "Admin":
+def admin_only(
+    current_user: Account = Depends(get_current_user),
+    db: Session = Depends(get_session)
+):
+    if not current_user.role_id:
+        raise HTTPException(status_code=403, detail="Akses Ditolak: Khusus Admin")
+
+    role = db.query(Role).filter(Role.id == current_user.role_id).first()
+    if not role or role.name != "Admin":
         raise HTTPException(status_code=403, detail="Akses Ditolak: Khusus Admin")
     return current_user

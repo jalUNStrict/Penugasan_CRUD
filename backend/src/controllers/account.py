@@ -19,4 +19,4 @@ class AccountController:
         return self.service.update(account_id, data)
 
     def delete_account(self, account_id: int):
-        return self.service.delete_account(account_id)
+        return self.service.remove(account_id)

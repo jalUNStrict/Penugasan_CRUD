@@ -19,7 +19,7 @@ class EventService:
         return self.repository.create(event)
 
     def list_events(self):
-        return self.repository.get_all()
+        return self.repository.find_all()
 
     def update_event(self, event_id: int, data: EventRequest):
         event = self.repository.get_by_id(event_id)

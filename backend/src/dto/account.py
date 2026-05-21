@@ -6,6 +6,11 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    username: str
+    password: str
+
 class AccountRequest(BaseModel):
     user_id: int
     role_id: int

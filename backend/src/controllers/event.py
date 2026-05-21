@@ -14,8 +14,8 @@ class EventController:
             name=req_body.name,
             description=req_body.description,
             quota=req_body.quota,
-            started_at=req_body.start_date,
-            end_at=req_body.end_date,
+            started_at=req_body.started_at,
+            ended_at=req_body.ended_at,
         )
         response = self.event_service.create_event(event_data)
         return response

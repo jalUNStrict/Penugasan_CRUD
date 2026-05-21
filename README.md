@@ -1,4 +1,5 @@
 Git clone:
+
 git clone https://github.com/jalUNStrict/Project-RSI/tree/main
 
 Run backend:
@@ -7,5 +8,7 @@ or
 poetry run fastapi dev src/app.py
 
 Run frontend:
+
 npm install
+
 npm run dev

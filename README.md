@@ -7,4 +7,5 @@ or
 poetry run fastapi dev src/app.py
 
 Run frontend:
+npm install
 npm run dev
